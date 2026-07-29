@@ -9,7 +9,7 @@ projects:
         databases:
           - name: autodesk-db
             databaseName: autodesk_db
-            user: autodesk_user
+            user: gurleen
             plan: free
             postgresMajorVersion: "16"
 
