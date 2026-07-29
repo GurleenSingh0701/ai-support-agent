@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Autodesk Postgres",
+      "Group": "Servers",
+      "Port": 5432,
+      "Username": "postgres",
+      "Host": "db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "autodesk_db"
+    }
+  }
+}

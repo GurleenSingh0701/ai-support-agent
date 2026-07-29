@@ -1,0 +1,27 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+*.db
+*.sqlite
+*.sqlite3
+
+# Virtual environments & IDE
+.venv/
+venv/
+.idea/
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment secrets (Ignore local .env, keep template .env.prod)
+.env
+**/.env
+.env.*
+!.env.example
+!.env.prod

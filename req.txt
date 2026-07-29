@@ -1,0 +1,4 @@
+# Deprecated file. Please use:
+# - requirements.txt (Root dependencies)
+# - backend/requirements.txt (Backend container dependencies)
+# - frontend/requirements.txt (Frontend container dependencies)
