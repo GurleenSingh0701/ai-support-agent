@@ -51,3 +51,8 @@ services:
           type: web
           name: autodesk-backend
           property: host
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: autodesk-backend
+          property: host

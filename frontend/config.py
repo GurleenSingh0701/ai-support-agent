@@ -12,8 +12,8 @@ import socket
 def resolve_backend_url() -> str:
     """
     Dynamically determines the correct backend URL.
-    If 'backend' hostname is unresolvable (e.g. running outside Docker network),
-    it automatically falls back to localhost:8000.
+    Handles Render internal hostnames, missing .onrender.com suffixes,
+    Docker container aliases, and localhost fallbacks seamlessly.
     """
     raw_url = os.getenv("API_BASE_URL") or os.getenv("BACKEND_URL")
     
@@ -24,8 +24,16 @@ def resolve_backend_url() -> str:
                 return raw_url
             except Exception:
                 return raw_url.replace("backend:8000", "localhost:8000")
+        
+        # Ensure scheme
         if not raw_url.startswith(("http://", "https://")):
             raw_url = f"https://{raw_url}"
+            
+        # Fix Render internal host property (e.g. https://autodesk-backend-ibzm -> https://autodesk-backend-ibzm.onrender.com)
+        clean_host = raw_url.replace("https://", "").replace("http://", "").split("/")[0]
+        if "onrender.com" not in clean_host and "localhost" not in clean_host and "127.0.0.1" not in clean_host and ":" not in clean_host:
+            raw_url = f"https://{clean_host}.onrender.com"
+
         return raw_url
 
     if os.path.exists("/.dockerenv"):
