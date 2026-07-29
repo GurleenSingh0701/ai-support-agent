@@ -10,6 +10,14 @@ databases:
     plan: free
     postgresMajorVersion: "16"
 
+envVarGroups:
+  - name: autodesk-secrets
+    envVars:
+      - key: REDIS_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+
 services:
   - type: web
     name: autodesk-backend
@@ -19,14 +27,11 @@ services:
     plan: free
     healthCheckPath: /
     envVars:
+      - fromGroup: autodesk-secrets
       - key: DATABASE_URL
         fromDatabase:
           name: autodesk-db
           property: connectionString
-      - key: REDIS_URL
-        sync: false
-      - key: GEMINI_API_KEY
-        sync: false
       - key: GEMINI_MODEL
         value: gemini-3.1-flash-lite
       - key: SECRET_KEY
