@@ -2,52 +2,47 @@
 # https://render.com/docs/blueprint-spec
 
 version: "1"
-projects:
-  - name: AI-Support-Agent
-    environments:
-      - name: Production
-        databases:
-          - name: autodesk-db
-            databaseName: autodesk_db
-            user: gurleen
-            plan: free
-            postgresMajorVersion: "16"
 
-        services:
-          - type: web
-            name: autodesk-backend
-            env: docker
-            dockerContext: ./backend
-            dockerfilePath: ./backend/Dockerfile
-            region: ohio
-            plan: free
-            healthCheckPath: /
-            envVars:
-              - key: DATABASE_URL
-                fromDatabase:
-                  name: autodesk-db
-                  property: connectionString
-              - key: REDIS_URL
-                sync: false
-              - key: GEMINI_API_KEY
-                sync: false
-              - key: GEMINI_MODEL
-                value: gemini-3.1-flash-lite
-              - key: SECRET_KEY
-                generateValue: true
-              - key: ALGORITHM
-                value: HS256
+databases:
+  - name: autodesk-db
+    databaseName: autodesk_db
+    user: gurleen
+    plan: free
+    postgresMajorVersion: "16"
 
-          - type: web
-            name: autodesk-frontend
-            env: docker
-            dockerContext: ./frontend
-            dockerfilePath: ./frontend/Dockerfile
-            region: ohio
-            plan: free
-            envVars:
-              - key: API_BASE_URL
-                fromService:
-                  type: web
-                  name: autodesk-backend
-                  property: host
+services:
+  - type: web
+    name: autodesk-backend
+    env: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: autodesk-db
+          property: connectionString
+      - key: REDIS_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.1-flash-lite
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+
+  - type: web
+    name: autodesk-frontend
+    env: docker
+    dockerContext: ./frontend
+    dockerfilePath: ./frontend/Dockerfile
+    plan: free
+    envVars:
+      - key: API_BASE_URL
+        fromService:
+          type: web
+          name: autodesk-backend
+          property: host
