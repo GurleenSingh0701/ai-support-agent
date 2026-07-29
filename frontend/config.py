@@ -24,6 +24,8 @@ def resolve_backend_url() -> str:
                 return raw_url
             except Exception:
                 return raw_url.replace("backend:8000", "localhost:8000")
+        if not raw_url.startswith(("http://", "https://")):
+            raw_url = f"https://{raw_url}"
         return raw_url
 
     if os.path.exists("/.dockerenv"):

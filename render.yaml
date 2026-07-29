@@ -9,7 +9,7 @@ projects:
         databases:
           - name: autodesk-db
             databaseName: autodesk_db
-            user: postgres
+            user: autodesk_user
             plan: free
             postgresMajorVersion: "16"
 
@@ -28,9 +28,9 @@ projects:
                   name: autodesk-db
                   property: connectionString
               - key: REDIS_URL
-                sync: false  # Paste your free Upstash Redis URL (rediss://...) or Render Redis
+                sync: false
               - key: GEMINI_API_KEY
-                sync: false  # Paste your Google Gemini API Key in Render dashboard
+                sync: false
               - key: GEMINI_MODEL
                 value: gemini-3.1-flash-lite
               - key: SECRET_KEY
@@ -50,4 +50,4 @@ projects:
                 fromService:
                   type: web
                   name: autodesk-backend
-                  property: url
+                  property: host
