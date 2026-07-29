@@ -7,6 +7,12 @@ import redis
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg://postgres:postgres@db:5432/autodesk_db")
 REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
 
+# Fix Render / Railway postgres:// URI format for SQLAlchemy 2.0 & psycopg3
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+elif DATABASE_URL.startswith("postgresql://") and "+psycopg" not in DATABASE_URL:
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
 # Setup SQLAlchemy
 try:
     engine = create_engine(DATABASE_URL)
